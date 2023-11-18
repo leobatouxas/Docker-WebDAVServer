@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  webdav-apache:
+    build: 
+      context: ./webdav
+      dockerfile: Dockerfile
+    container_name: webdav-apache-container
+    ports:
+      - "8080:80"
+    volumes:
+      - ./webdav/apache2/www:/usr/local/apache2/webdav
+      - ./webdav/apache2/htpasswd:/usr/local/apache2/htpasswd
+    networks:
+      - my-network
+    environment:
+      - APACHE_RUN_USER=www-data
+      - APACHE_RUN_GROUP=www-data
+    command: /bin/sh -c "httpd-foreground"
+    
+networks:
+  my-network:
